@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block contents %}
+<div class="row mt-5">
+    <div class="col-12">
+        <form method="POST" action=".">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label}}">{{ field.label }}</label>
+                    {% comment %} 왜 12번 라인에서 오류가 나는거야?? 틀린거 없는데!! 씨벌 {% endcomment %}
+                    {{ field.field.widget.name }}
+                    {% ifequal field.name 'contents' %}
+                    <textarea class="form-control" name="{{ field.name }}" placeholder="{{ field.label }}"></textarea>
+                    {% else %}
+                    <input type="{{ field.field.widget.input_type}}" class="form-control" id="{{ field.id_for_label }}" placeholder="{{ field.label }}", name="{{ field.name }}" />
+                    {% endifequal %}
+                </div>
+                {% if field.errors %}
+                <p class="text-primary">{{ field.errors }}</p>
+                {% endif %}
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">글쓰기</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
